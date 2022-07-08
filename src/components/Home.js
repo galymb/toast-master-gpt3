@@ -103,3 +103,33 @@ class Home extends Component {
 }
 
 export default Home
+
+
+
+// <Form onSubmit={this.onFormSubmit}>
+//                         <Row>
+//                             <Col>
+//                                 <Form.Group className="mb-3" controlId="formBasicEmail">
+//                                     <Form.Label>👰 Please type a bride's name below</Form.Label>
+//                                     <Form.Control 
+//                                             type="text"
+//                                             name="brideName"
+//                                             placeholder="Example: Далида" />
+//                                 </Form.Group>
+//                             </Col>
+//                             <Col>
+//                                 <Form.Group className="mb-3" controlId="formBasicEmail">
+//                                     <Form.Label>🤵 Please type a groom's name below</Form.Label>
+//                                     <Form.Control 
+//                                             type="text"
+//                                             name="groomName"
+//                                             placeholder="Example: Куаныш" />
+//                                     </Form.Group>
+//                             </Col>
+//                         </Row>
+//                         <div class="col text-center">
+//                             <Button variant="primary" type="submit">
+//                                 Get AI suggestion 🤖
+//                             </Button>
+//                         </div>
+//                     </Form>
