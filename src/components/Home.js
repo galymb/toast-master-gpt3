@@ -32,7 +32,7 @@ class Home extends Component {
             model: "davinci:ft-personal-2022-07-07-18-00-39",
             prompt: `Generate a wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} below in Kazakh:\n\n\n`,
             temperature: 0.56,
-            max_tokens: 256,
+            max_tokens: 300,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
