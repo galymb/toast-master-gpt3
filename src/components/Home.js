@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Component } from 'react'
-import { Container, Form, Button, Card, Col, Row} from 'react-bootstrap'
+import { Container, Form, Button, Card, Col, Row, Spinner } from 'react-bootstrap'
 
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -8,14 +8,17 @@ class Home extends Component {
     constructor() {
         super()
         this.state = {
-            heading: 'AI generated toast will be shown here',
-            response: '...await the reponse'
+            heading: 'AI generated toast will be shown below',
+            response: '...await the reponse',
+            loading: false,
+            errorMessage: '',
         }
     }
 
     onFormSubmit = e => {
         // Start by preventing the default
         e.preventDefault()
+        this.setState({ loading: true })
 
         const formData = new FormData(e.target),
         formDataObj = Object.fromEntries(formData.entries())
@@ -40,9 +43,13 @@ class Home extends Component {
           .then((response) => {
             this.setState({
                 heading: `GPT-3 generated a wedding toast for ${formDataObj.brideName} and ${formDataObj.groomName}`,
-                response: `${response.data.choices[0].text}`
+                response: `${response.data.choices[0].text}`,
+                loading: false,
+                errorMessage: '',
             })
-          });
+          }).catch(err => { this.setState({ errorMessage: err.message })
+                            this.setState({ loading: false})
+        });
     }
 
     render() {
@@ -74,11 +81,26 @@ class Home extends Component {
                                     </Form.Group>
                             </Col>
                         </Row>
-                        <div class="col text-center">
-                            <Button variant="primary" type="submit">
+                        {this.state.loading ? (
+                            <div class="col text-center">
+                                <Button variant="primary" disabled>
+                                    
+                                Loading ...{" "}
+                                <Spinner 
+                                    as="span"
+                                    animation="border" 
+                                    size="sm"
+                                    role="status"/>
+                                </Button>
+                            </div>
+                            
+                        ) :
+                            <div class="col text-center">
+                                <Button variant="primary" type="submit">
                                 Get AI suggestion 🤖
-                            </Button>
-                        </div>
+                                </Button>
+                            </div>
+                        }
                     </Form>
                     </Container>
                 <br />
@@ -88,9 +110,10 @@ class Home extends Component {
                         <Card.Title><h6>{this.state.heading}</h6></Card.Title>
                         <hr />
                         <Card.Text>
-                            <p>
-                                {this.state.response}
-                            </p>
+                                <p>
+                                {this.state.errorMessage &&
+                                <h6 className="error"><strong>Something went wrong, try later <br /> {this.state.errorMessage }</strong></h6>}
+                                </p>
                         </Card.Text>
                     </Card.Body>
                 </Card>

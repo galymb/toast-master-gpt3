@@ -10,6 +10,7 @@ class Navigation extends Component {
         return(
             <div> 
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                    <Container>
                     <Navbar.Brand href="/"> 
                         <img
                         src={logo}
@@ -18,6 +19,7 @@ class Navigation extends Component {
                         />
                         powered by GPT-3
                     </Navbar.Brand>
+                    </Container>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
