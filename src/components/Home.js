@@ -32,7 +32,7 @@ class Home extends Component {
         const openai = new OpenAIApi(configuration);
 
         openai.createCompletion({
-            model: "davinci:ft-personal-2022-07-07-18-00-39",
+            model: "davinci:ft-personal-2022-07-20-09-18-19",
             prompt: `Generate a wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} below in Kazakh:\n\n\n`,
             temperature: 0.56,
             max_tokens: 256,
