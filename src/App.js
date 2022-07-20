@@ -13,8 +13,8 @@ function App() {
       <Navigation />
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/gpt3" element={<GPT3 />} />
-          <Route path="/about" element={<About />} />
+          {/* <Route path="/gpt3" element={<GPT3 />} />
+          <Route path="/about" element={<About />} /> */}
         </Routes>
       </div>
       <Footer />
