@@ -52,6 +52,8 @@ class Home extends Component {
         });
     }
 
+    
+
     render() {
         return (
             <div>
@@ -110,10 +112,13 @@ class Home extends Component {
                         <Card.Title><h6>{this.state.heading}</h6></Card.Title>
                         <hr />
                         <Card.Text>
-                                <p>
-                                {this.state.errorMessage &&
-                                <h6 className="error"><strong>Something went wrong, try later <br /> {this.state.errorMessage }</strong></h6>}
-                                </p>
+                                 <p>
+                                 {this.state.response}
+                                 </p>
+                                {/* // <p>
+                                // {this.state.errorMessage &&
+                                // <h6 className="error"><strong>Something went wrong, try later <br /> {this.state.errorMessage }</strong></h6>}
+                                // </p>                               */}
                         </Card.Text>
                     </Card.Body>
                 </Card>
