@@ -12,6 +12,8 @@ class Footer extends Component {
                 <Row>
                     <Col className="text-center py-3">
                         Made by @baitimbetovg at Nfactorial Incubator 2022
+                        <br />
+                        updated in 2024 
                     </Col>
                 </Row>
             </Container>

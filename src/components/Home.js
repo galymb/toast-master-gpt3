@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { Container, Form, Button, Card, Col, Row, Spinner } from 'react-bootstrap'
-
-const { Configuration, OpenAIApi } = require("openai");
+import OpenAI from 'openai'
 
 class Home extends Component {
     constructor() {
@@ -12,7 +10,19 @@ class Home extends Component {
             response: '...await the reponse',
             loading: false,
             errorMessage: '',
+            brideName: '',
+            groomName: ''
         }
+    }
+
+    handleInputChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    isFormValid = () => {
+        return this.state.brideName.trim() !== '' && this.state.groomName.trim() !== '';
     }
 
     onFormSubmit = e => {
@@ -26,29 +36,42 @@ class Home extends Component {
         console.log(process.env)
 
         //OpenAI
-        const configuration = new Configuration({
-            apiKey: process.env.REACT_APP_OPENAI_API_KEY
-            });
-        const openai = new OpenAIApi(configuration);
+        const openai = new OpenAI({
+            apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+            dangerouslyAllowBrowser: true // needed for client-side usage
+        });
 
-        openai.createCompletion({
-            model: "davinci:ft-personal-2022-07-20-09-18-19",
-            prompt: `Generate a wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} below in Kazakh:\n\n\n`,
-            temperature: 0.56,
-            max_tokens: 256,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
-          })
-          .then((response) => {
+        openai.chat.completions.create({
+            model: "gpt-4",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a great at Kazakh language and you are helping to generate wedding toasts. Keep responses complete and under 150 words."
+                },
+                {
+                    role: "user",
+                    content: `Generate a complete wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} in Kazakh. Make it concise but ensure it's a complete toast.`
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 300,
+            presence_penalty: 0.6,  // Helps ensure complete thoughts
+            frequency_penalty: 0.2, // Helps with natural language
+            stop: ["###"]  // Clear stop sequence
+        })
+        .then((response) => {
             this.setState({
-                heading: `GPT-3 generated a wedding toast for ${formDataObj.brideName} and ${formDataObj.groomName}`,
-                response: `${response.data.choices[0].text}`,
+                heading: `GPT-4 generated a wedding toast for ${formDataObj.brideName} and ${formDataObj.groomName}`,
+                response: response.choices[0].message.content,
                 loading: false,
-                errorMessage: '',
+                errorMessage: ''
             })
-          }).catch(err => { this.setState({ errorMessage: err.message })
-                            this.setState({ loading: false})
+        }).catch(err => {
+            this.setState({ 
+                errorMessage: err.message || 'An error occurred while generating the toast',
+                loading: false,
+                response: ''
+            });
         });
     }
 
@@ -70,7 +93,10 @@ class Home extends Component {
                                     <Form.Control 
                                             type="text"
                                             name="brideName"
-                                            placeholder="Example: Далида" />
+                                            value={this.state.brideName}
+                                            onChange={this.handleInputChange}
+                                            placeholder="Example: Далида" 
+                                    />
                                 </Form.Group>
                             </Col>
                             <Col>
@@ -79,7 +105,10 @@ class Home extends Component {
                                     <Form.Control 
                                             type="text"
                                             name="groomName"
-                                            placeholder="Example: Куаныш" />
+                                            value={this.state.groomName}
+                                            onChange={this.handleInputChange}
+                                            placeholder="Example: Куаныш" 
+                                    />
                                     </Form.Group>
                             </Col>
                         </Row>
@@ -98,8 +127,12 @@ class Home extends Component {
                             
                         ) :
                             <div class="col text-center">
-                                <Button variant="primary" type="submit">
-                                Get AI suggestion 🤖
+                                <Button 
+                                    variant="primary" 
+                                    type="submit" 
+                                    disabled={!this.isFormValid()}
+                                >
+                                    Get AI suggestion 🤖
                                 </Button>
                             </div>
                         }
@@ -112,13 +145,12 @@ class Home extends Component {
                         <Card.Title><h6>{this.state.heading}</h6></Card.Title>
                         <hr />
                         <Card.Text>
-                                 <p>
-                                 {this.state.response}
-                                 </p>
-                                {/* // <p>
-                                // {this.state.errorMessage &&
-                                // <h6 className="error"><strong>Something went wrong, try later <br /> {this.state.errorMessage }</strong></h6>}
-                                // </p>                               */}
+                            <p>{this.state.response}</p>
+                            {this.state.errorMessage && (
+                                <h6 className="error">
+                                    <strong>Error: {this.state.errorMessage}</strong>
+                                </h6>
+                            )}
                         </Card.Text>
                     </Card.Body>
                 </Card>

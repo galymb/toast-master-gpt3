@@ -16,8 +16,9 @@ class Navigation extends Component {
                         src={logo}
                         width="30"
                         height="30"
+                        alt="logo"
                         />
-                        powered by GPT-3
+                        powered by GPT-4
                     </Navbar.Brand>
                     </Container>
                     {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" />
