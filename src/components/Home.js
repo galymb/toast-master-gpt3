@@ -42,22 +42,19 @@ class Home extends Component {
         });
 
         openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4o-mini",
             messages: [
                 {
                     role: "system",
-                    content: "You are a great at Kazakh language and you are helping to generate wedding toasts. Keep responses complete and under 150 words."
+                    content: "You are a helpful assistant that generates wedding toasts in Kazakh language. Keep responses between 100 words to ensure completeness."
                 },
                 {
                     role: "user",
-                    content: `Generate a complete wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} in Kazakh. Make it concise but ensure it's a complete toast.`
+                    content: `Generate a complete wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} in Kazakh. The toast should be 100 words long.`
                 }
             ],
             temperature: 0.7,
-            max_tokens: 300,
-            presence_penalty: 0.6,  // Helps ensure complete thoughts
-            frequency_penalty: 0.2, // Helps with natural language
-            stop: ["###"]  // Clear stop sequence
+            max_tokens: 200,
         })
         .then((response) => {
             this.setState({
