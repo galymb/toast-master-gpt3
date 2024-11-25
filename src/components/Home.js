@@ -46,11 +46,11 @@ class Home extends Component {
             messages: [
                 {
                     role: "system",
-                    content: "You are a helpful assistant that generates wedding toasts in Kazakh language. Keep responses between 100 words to ensure completeness."
+                    content: "You are a helpful assistant that generates wedding toasts in Kazakh language. Keep responses between 50-80 words to ensure completeness."
                 },
                 {
                     role: "user",
-                    content: `Generate a complete wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} in Kazakh. The toast should be 100 words long.`
+                    content: `Generate a complete wedding wish for ${formDataObj.brideName} and ${formDataObj.groomName} in Kazakh. The toast should be between 50-80 words long.`
                 }
             ],
             temperature: 0.7,
